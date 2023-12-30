@@ -1,0 +1,40 @@
+{% extends "no_sidebar_base.html" %}
+{% load static %}
+
+{% block head %}
+<!-- Add any additional CSS or styling links here -->
+{% endblock %}
+
+{% block content %}
+<h1 class="display-6 my-3">Watched Movies</h1>
+<div class="row row-cols-2 row-cols-md-6 g-2 mb-5">
+    {% for watched_movie in watched_movies %}
+    <div class="col">
+        <a href="{% url 'movie-detail' watched_movie.movie.slug %}">
+            <div class="card border-0">
+                {% if watched_movie.movie.poster %}
+                <img src="{{ watched_movie.movie.poster.url }}" class="card-img"
+                    alt="{{ watched_movie.movie.title }} Poster" style="object-fit: cover;">
+                {% else %}
+                <img src="https://via.placeholder.com/160x240.png?text=No+Image" class="card-img"
+                    alt="{{ watched_movie.movie.title }} Poster" style="object-fit: cover;">
+                {% endif %}
+                <div class="position-absolute bottom-0 start-0 end-0"
+                    style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));">
+                    <div class="p-2 text-white">
+                        <h5 class="card-title">{{ watched_movie.movie.title }}</h5>
+                        <p class="card-text">
+                            {% for genre in watched_movie.movie.genres.all %}
+                            <span class="badge bg-secondary" style="font-size: 10px;">{{ genre.name }}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% empty %}
+    <p>No movies available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
